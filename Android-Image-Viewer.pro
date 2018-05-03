@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui quick androidextras
+QT       += core gui quick androidextras qml charts widgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -32,11 +32,11 @@ SOURCES += \
 
 HEADERS += \
     androidwindow.h \
-    androidimage.h \
     caminhoimagens.h \
     imagepickerandroid.h
 
-FORMS +=
+FORMS += \
+    mainwindow.ui
 
 CONFIG += mobility
 MOBILITY = 
@@ -48,7 +48,8 @@ DISTFILES += \
     android/res/values/libs.xml \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew.bat
+    android/gradlew.bat \
+    MainWindow.qml
 
 ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 

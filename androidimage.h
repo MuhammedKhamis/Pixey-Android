@@ -3,7 +3,7 @@
 
 #include<QImage>
 #include<QLabel>
-
+#include<Qt>
 #include "caminhoimagens.h"
 
 class AndroidImage: public QLabel
@@ -15,9 +15,24 @@ public:
 public slots:
     void getImage();
     void saveImage();
+    void zoom(int value);
+    void rotate(int value);
+
 
 private:
-    caminhoImagens tmp;
+    imageLoader* loader;
+    void scaleImage(double factor);
+private slots:
+    void putImage();
+
+protected:
+    void mousePressEvent(QMouseEvent* ev);
+    void mouseReleaseEvent(QMouseEvent *ev);
+
+
+signals:
+    void imageLoaded();
+
 };
 
 #endif // ANDROIDIMAGE_H

@@ -1,31 +1,110 @@
 #include "androidwindow.h"
 #include "androidimage.h"
+#include "ui_mainwindow.h"
+
 
 #include<QMainWindow>
 #include<QtWidgets>
 #include<QMenu>
 #include<QAction>
-#include <QPalette>
+#include <Qt>
 
-AndroidWindow::AndroidWindow(){
+
+AndroidWindow::AndroidWindow(QWidget *parent):
+    QMainWindow(parent),
+    ui(new Ui::And){
+
+    ui->setupUi(this);
 
     //amr
+
+    importTest = new QPushButton(tr("import"));
+
     QMenu* menu = new QMenu ;
 
-    QAction* loady = new QAction(tr("load"));
+    /////////////////////////////// Actions ////////////////////////////////////////
+    load = new QAction(tr("load"));
+    menu->addAction(load);
 
-    menu->addAction(loady);
+    save = new QAction(tr("Save"));
+    menu->addAction(save);
+
+    crop = new QAction(tr("Crop"));
+    menu->addAction(crop);
+
+    undo = new QAction(tr("Undo"));
+    menu->addAction(undo);
+
+    reset = new QAction(tr("Reset"));
+    menu->addAction(reset);
+
+    exit = new QAction(tr("Exit"));
+    menu->addAction(exit);
+
 
     this->menuBar()->addMenu(menu);
-
-   image = new AndroidImage;
-
-    connect(loady,SIGNAL(triggered(bool)),image,SLOT(getImage()));
+//    this->menuBar()->setNativeMenuBar(false);
 
 
-    image->setStyleSheet("background-color : gray;");
+    /////////////////////////////////////////////////////////////////////////////////
 
-    this->setCentralWidget(image);
+
+
+    ///////////////////////////////////// Sliders ///////////////////////////////////
+
+    zoomer = new QSlider(Qt::Vertical);
+    zoomer->setRange(1,50);
+    zoomer->setValue(25);
+
+    /////////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////  Dial ///////////////////////////////////////
+
+    rotator = new QDial();
+    rotator->setRange(1,50);
+    rotator->setValue(25);
+
+    /////////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////// Image Holder //////////////////////////////////
+    image = new AndroidImage;
+
+    image->setStyleSheet("background-color : red;");
+    //////////////////////////////////////////////////////////////////////////////////
+
+
+    //////////////////////////////////////// LayOut /////////////////////////////////
+
+    QGridLayout* layout = new QGridLayout();
+
+    layout->addWidget(image,0,0,10,25);
+
+    layout->addWidget(zoomer,1,29,4,4);
+
+    layout->addWidget(rotator,6,28,4,4);
+
+    layout->addWidget(importTest,10,29);
+
+
+    /////////////////////////////////////////////////////////////////////////////////
+
+    ////////////////////////////// Building GUI /////////////////////////////////////
+
+    QWidget* widget = new QWidget(this);
+
+    widget->setLayout(layout);
+
+    setCentralWidget(widget);
+
+    //////////////////////////// Connections ////////////////////////////////////////////
+
+    addConnections();
+
+    /////////////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////// Disable Buttons ////////////////////////////////////
+    disableActions();
+
 
     /*
 
@@ -50,14 +129,9 @@ AndroidWindow::AndroidWindow(){
     reset = new QPushButton(tr("&Reset"));
     reset->setFocusPolicy(Qt::NoFocus);
 
-    zoomer = new QSlider(Qt::Vertical);
-    zoomer->setRange(1,50);
-    zoomer->setValue(25);
+
 
     zoomer->setFocusPolicy(Qt::NoFocus);
-
-    rotator = new QDial();
-    rotator->setValue(0);
 
     Connect Slot with the button signals;
       Android Image implementaion goes here
@@ -79,7 +153,49 @@ AndroidWindow::AndroidWindow(){
     */
 }
 
-void AndroidWindow::handle(){
 
+void AndroidWindow::addConnections(){
+    ////////////////////////////// Load ////////////////////////////
+    connect(load,SIGNAL(triggered(bool)),image,SLOT(getImage()));
+    connect(importTest,SIGNAL(clicked(bool)),image,SLOT(getImage()));
+    //////////////////////// Save ////////////////////////////////
 
- }
+    //////////////////////// Zoom ////////////////////////////////
+    connect(zoomer,SIGNAL(valueChanged(int)),image,SLOT(zoom(int)));
+    //////////////////////// Crop //////////////////////////////////
+
+    //////////////////////// Rotate ///////////////////////////////
+    connect(rotator,SIGNAL(valueChanged(int)),image,SLOT(rotate(int)));
+    /////////////////////// Undo /////////////////////////////////
+
+    ////////////////////// Reset ////////////////////////////////
+
+    ////////////////////// Exit /////////////////////////////////
+    connect(exit,SIGNAL(triggered(bool)),this,SLOT(close()));
+
+    ////////////////////// Actions Enabling /////////////////////
+    connect(image,SIGNAL(imageLoaded()),this,SLOT(updateActions()));
+
+}
+
+void AndroidWindow::updateActions(){
+    save->setEnabled(true);
+    crop->setEnabled(true);
+    undo->setEnabled(true);
+    reset->setEnabled(true);
+    zoomer->setEnabled(true);
+    rotator->setEnabled(true);
+}
+void AndroidWindow::disableActions(){
+    bool flag = false;
+    save->setEnabled(flag);
+    crop->setEnabled(flag);
+    undo->setEnabled(flag);
+    reset->setEnabled(flag);
+    zoomer->setEnabled(flag);
+    rotator->setEnabled(flag);
+}
+
+AndroidWindow::~AndroidWindow(){
+    delete ui;
+}

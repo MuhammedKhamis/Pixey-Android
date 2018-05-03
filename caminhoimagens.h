@@ -7,26 +7,26 @@
 
 #include <QDebug>
 
-class caminhoImagens : public QObject
+class imageLoader : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString imagemCaminho READ imagemCaminho NOTIFY imagemCaminhoChanged)
+    Q_PROPERTY(QString imagePath READ imagePath NOTIFY imagePathChanged)
 
 public slots:
-    void buscaImagem();
-    void retornaImagem(QString path);
+    void searchImage();
+    void returnImage(QString path);
 
 public:
-    caminhoImagens();
+    imageLoader();
 
-    QString imagemCaminho();
+    QString imagePath();
 
 private:
-    QString m_imagemCaminho = "";
+    QString imgPath = "";
 
 signals:
-    void imagemCaminhoChanged();
+    void imagePathChanged();
 };
 
 #endif //CAMINHOIMAGENS_H

@@ -1,28 +1,26 @@
 #include "caminhoimagens.h"
 
-caminhoImagens::caminhoImagens()
+imageLoader::imageLoader()
 {
 
 }
 
-void caminhoImagens::buscaImagem()
+void imageLoader::searchImage()
 {
     imagePickerAndroid *imagePicker = new imagePickerAndroid();
-    connect(imagePicker, SIGNAL(imagemCaminhoSignal(QString)), this, SLOT(retornaImagem(QString)));
+    connect(imagePicker, SIGNAL(imagePathSignal(QString)), this, SLOT(returnImage(QString)));
 
-    imagePicker->buscaImagem();
+    imagePicker->searchImage();
 }
 
-void caminhoImagens::retornaImagem(QString path)
+void imageLoader::returnImage(QString path)
 {
-    qDebug() << path;
+    imgPath = path;
 
-    m_imagemCaminho = path;
-
-    emit imagemCaminhoChanged();
+    emit imagePathChanged();
 }
 
-QString caminhoImagens::imagemCaminho()
+QString imageLoader::imagePath()
 {
-    return m_imagemCaminho;
+    return imgPath;
 }
