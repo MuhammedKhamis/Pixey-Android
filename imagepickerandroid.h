@@ -14,12 +14,12 @@ class imagePickerAndroid : public QObject, public QAndroidActivityResultReceiver
 public:
     imagePickerAndroid();
 
-    void searchImage();
+    void buscaImagem();
 
     virtual void handleActivityResult(int receiverRequestCode, int resultCode, const QAndroidJniObject & data);
 
 signals:
-    void imagePathSignal(QString);
+    void imagemCaminhoSignal(QString);
 };
 
 #endif // IMAGEPICKERANDROID_H

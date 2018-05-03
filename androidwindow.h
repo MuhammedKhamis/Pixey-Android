@@ -8,10 +8,6 @@
 #include<QDial>
 #include<QMainWindow>
 
-namespace Ui {
-    class AndroidWindow;
-}
-
 class AndroidImage;
 
 class AndroidWindow : public QMainWindow
@@ -19,30 +15,22 @@ class AndroidWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit AndroidWindow(QWidget *parent=0);
-    ~AndroidWindow();
+    AndroidWindow();
+    void handle();
+
 private:
 
-    Ui::AndroidWindow *ui;
-
-    void addConnections();
-
-    void disableActions();
-
     AndroidImage* image;
+
+    QPushButton* load;
+    QPushButton* save;
+    QPushButton* quit;
+    QPushButton* zoom;
+    QPushButton* crop;
     QSlider* zoomer;
     QDial* rotator;
-    QAction* load;
-    QAction* save;
-    QAction* crop;
-    QAction* undo ;
-    QAction* reset;
-    QAction* exit;
-    QPushButton* importTest;
-
-
-private slots:
-    void updateActions();
+    QPushButton* undo;
+    QPushButton* reset;
 
 };
 

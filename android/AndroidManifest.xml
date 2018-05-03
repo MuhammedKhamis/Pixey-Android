@@ -75,5 +75,4 @@
     <!-- %%INSERT_FEATURES -->
 
 <uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES"/>
-<uses-permission android:name="android.permission.INTERNET" /> 
 </manifest>
